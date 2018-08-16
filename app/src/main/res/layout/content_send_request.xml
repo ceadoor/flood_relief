@@ -1,54 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="20dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".SendRequest"
     tools:showIn="@layout/activity_send_request">
 
-    <EditText
-        android:id="@+id/et_name"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Name"
-        android:inputType="textPersonName"
-        android:paddingBottom="10dp"
-        android:paddingTop="20dp" />
+        android:orientation="vertical"
+        android:padding="20dp">
 
-    <EditText
-        android:id="@+id/et_phone"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Phone"
-        android:inputType="phone"
-        android:paddingBottom="10dp"
-        android:paddingTop="20dp" />
+        <EditText
+            android:id="@+id/et_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Name"
+            android:inputType="textPersonName"
+            android:paddingBottom="10dp"
+            android:paddingTop="20dp" />
 
-    <Spinner
-        android:id="@+id/sp_prio"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:entries="@array/necessity"
-        android:paddingBottom="10dp"
-        android:paddingTop="20dp" />
+        <EditText
+            android:id="@+id/et_phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Phone"
+            android:inputType="phone"
+            android:paddingBottom="10dp"
+            android:paddingTop="20dp" />
 
-    <MultiAutoCompleteTextView
-        android:id="@+id/et_decr"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Description"
-        android:paddingBottom="10dp"
-        android:paddingTop="20dp" />
+        <Spinner
+            android:id="@+id/sp_prio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/necessity"
+            android:paddingBottom="10dp"
+            android:paddingTop="20dp" />
 
-    <Button
-        android:id="@+id/btn_send"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Send" />
-</LinearLayout>
+        <MultiAutoCompleteTextView
+            android:id="@+id/et_decr"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:gravity="top"
+            android:hint="Description"
+            android:paddingBottom="10dp"
+            android:paddingTop="20dp" />
+
+        <Button
+            android:id="@+id/btn_send"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Send" />
+    </LinearLayout>
+</ScrollView>

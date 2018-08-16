@@ -1,11 +1,12 @@
 package in.keralafloodrelief;
 
 import android.content.Intent;
-import android.net.Uri;
+import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -28,6 +29,9 @@ import http.HttpRequest;
 public class RecentRequests extends AppCompatActivity {
 
     RecyclerView mRecyclerView;
+    final int MY_PERMISSIONS_REQUEST_1 = 100;
+    SwipeRefreshLayout srlist;
+    SingleShotLocationProvider.GPSCoordinates location;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +41,7 @@ public class RecentRequests extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         mRecyclerView = findViewById(R.id.rv_list);
+        srlist = findViewById(R.id.srlist);
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getBaseContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -56,9 +61,14 @@ public class RecentRequests extends AppCompatActivity {
             }
         });
 
-        getRequests();
+        srlist.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                configureMyLocation();
+            }
+        });
 
-
+        configureMyLocation();
     }
 
 
@@ -70,11 +80,13 @@ public class RecentRequests extends AppCompatActivity {
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
+                srlist.setRefreshing(true);
             }
 
             @Override
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
+                srlist.setRefreshing(false);
 
 
                 if (result != null) {
@@ -103,14 +115,15 @@ public class RecentRequests extends AppCompatActivity {
                     Map<String, String> data = new HashMap<String, String>();
 
                     data.put("key", getResources().getString(R.string.api_key));
-
+                    data.put("latitude", String.valueOf(location.latitude));
+                    data.put("longitude", String.valueOf(location.longitude));
                     HttpRequest request = HttpRequest.post(getResources().getString(R.string.api_base_url) + "get_req");
                     request.form(data).created();
-//                    Log.e("======",request.body());
                     if (request.ok()) {
                         result = new JSONObject(request.body());
                     }
                 } catch (Exception e) {
+                    e.printStackTrace();
                     return null;
                 }
 
@@ -120,6 +133,36 @@ public class RecentRequests extends AppCompatActivity {
         }.execute();
     }
 
+    private void configureMyLocation() {
+        SingleShotLocationProvider.requestSingleUpdate(RecentRequests.this,
+                new SingleShotLocationProvider.LocationCallback() {
+                    @Override
+                    public void onNewLocationAvailable(SingleShotLocationProvider.GPSCoordinates mlocation) {
+                        RecentRequests.this.location = mlocation;
+                        getRequests();
+
+
+                    }
+                });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_1: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    configureMyLocation();
+                    return;
+                } else {
+                    Toast.makeText(RecentRequests.this, "Location Permission denied.", Toast.LENGTH_LONG).show();
+                    finish();
+                }
+                return;
+            }
+        }
+    }
 
     public class RequestShowAdapter extends RecyclerView.Adapter<RequestShowAdapter.ViewHolder> {
         private JSONArray mDataset;
@@ -149,16 +192,24 @@ public class RecentRequests extends AppCompatActivity {
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        String qstr = null;
-                        try {
-                            qstr = item.getString("latitude") + "," + item.getString("longitude");
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        Uri gmmIntentUri = Uri.parse("google.navigation:q=" + qstr);
-                        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                        mapIntent.setPackage("com.google.android.apps.maps");
-                        startActivity(mapIntent);
+
+                        Intent intent = new Intent(RecentRequests.this, ShowReuest.class);
+                        intent.putExtra("item", item.toString());
+                        startActivity(intent);
+
+
+//                        String qstr = null;
+//                        try {
+//                            qstr = item.getString("latitude") + "," + item.getString("longitude");
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                        }
+//                        Uri gmmIntentUri = Uri.parse("google.navigation:q=" + qstr);
+//                        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+//                        mapIntent.setPackage("com.google.android.apps.maps");
+//                        startActivity(mapIntent);
+
+
                     }
                 });
             } catch (JSONException e) {

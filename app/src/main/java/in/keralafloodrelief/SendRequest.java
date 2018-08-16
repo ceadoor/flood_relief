@@ -1,6 +1,7 @@
 package in.keralafloodrelief;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -104,15 +105,22 @@ public class SendRequest extends AppCompatActivity implements View.OnClickListen
 
         new AsyncTask<String, Void, String>() {
             JSONObject result = null;
+            ProgressDialog pd;
+
 
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
+                pd = new ProgressDialog(SendRequest.this);
+                pd.setMessage("Sending..");
+                pd.setCancelable(false);
+                pd.show();
             }
 
             @Override
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
+                pd.dismiss();
 
 
                 if (result != null) {
