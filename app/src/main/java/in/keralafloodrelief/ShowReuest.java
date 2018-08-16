@@ -21,12 +21,11 @@ public class ShowReuest extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_reuest);
-        getSupportActionBar().hide();
-
-        Bundle extras = getIntent().getExtras();
+//        getSupportActionBar().hide();
 
         try {
             item = new JSONObject(getIntent().getStringExtra("item"));
+            getSupportActionBar().setTitle(item.getString("name"));
             setupStats();
         } catch (JSONException e) {
             e.printStackTrace();
@@ -35,11 +34,11 @@ public class ShowReuest extends AppCompatActivity {
     }
 
     private void setupStats() throws JSONException {
-        ((TextView) findViewById(R.id.textView)).setText(item.getString("name"));
+        ((TextView) findViewById(R.id.textView)).setText(item.getString("added_on"));
         ((TextView) findViewById(R.id.textView2)).setText(item.getString("descr"));
         final String qstr = item.getString("latitude") + "," + item.getString("longitude");
         Picasso.get()
-                .load("http://maps.googleapis.com/maps/api/staticmap?center=" + item.getString("latitude") + "," + item.getString("longitude") + "&size=400x400&sensor=true&zoom=15")
+                .load("http://maps.googleapis.com/maps/api/staticmap?center=" + item.getString("latitude") + "," + item.getString("longitude") + "&size=800x800&sensor=true&zoom=15")
                 .into((ImageView) findViewById(R.id.imageView));
 
         Uri gmmIntentUri = Uri.parse("google.navigation:q=" + qstr);

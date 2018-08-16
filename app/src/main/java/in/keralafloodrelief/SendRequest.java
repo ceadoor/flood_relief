@@ -158,6 +158,7 @@ public class SendRequest extends AppCompatActivity implements View.OnClickListen
 
                     HttpRequest request = HttpRequest.post(getResources().getString(R.string.api_base_url) + "send_request");
                     request.form(data).created();
+
                     if (request.ok()) {
                         result = new JSONObject(request.body());
                     }
