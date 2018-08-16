@@ -144,9 +144,9 @@ public class SendRequest extends AppCompatActivity implements View.OnClickListen
                     data.put("longitude", String.valueOf(location.longitude));
                     data.put("name", name.getText().toString());
                     data.put("phone", phone.getText().toString());
+                    data.put("priority", String.valueOf(getResources().getIntArray(R.array.level)[prio.getSelectedItemPosition()]));
                     data.put("descr", descr.getText().toString());
                     data.put("key", getResources().getString(R.string.api_key));
-
 
                     HttpRequest request = HttpRequest.post(getResources().getString(R.string.api_base_url) + "send_request");
                     request.form(data).created();
