@@ -2,6 +2,7 @@ package in.keralafloodrelief;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -13,13 +14,22 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-public class SendRequest extends AppCompatActivity {
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import http.HttpRequest;
+
+public class SendRequest extends AppCompatActivity implements View.OnClickListener {
 
     final int MY_PERMISSIONS_REQUEST_1 = 100;
 
     EditText name, phone, descr;
     Spinner prio;
     Button send;
+    SingleShotLocationProvider.GPSCoordinates location;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,12 +83,86 @@ public class SendRequest extends AppCompatActivity {
         SingleShotLocationProvider.requestSingleUpdate(SendRequest.this,
                 new SingleShotLocationProvider.LocationCallback() {
                     @Override
-                    public void onNewLocationAvailable(final SingleShotLocationProvider.GPSCoordinates location) {
+                    public void onNewLocationAvailable(SingleShotLocationProvider.GPSCoordinates mlocation) {
                         send.setVisibility(View.VISIBLE);
-
+                        send.setOnClickListener(SendRequest.this);
+                        SendRequest.this.location = mlocation;
 
                     }
                 });
     }
 
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.btn_send) {
+            SendThis();
+        }
+    }
+
+
+    private void SendThis() {
+
+        new AsyncTask<String, Void, String>() {
+            JSONObject result = null;
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                super.onPostExecute(s);
+
+
+                if (result != null) {
+
+                    try {
+                        if (result.getInt("status") == 1) {
+
+                            Toast.makeText(getBaseContext(), result.getString("msg"), Toast.LENGTH_LONG).show();
+                            finish();
+
+                        } else {
+                            Toast.makeText(getBaseContext(), result.getString("msg"), Toast.LENGTH_LONG).show();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        Toast.makeText(getBaseContext(), "Data error", Toast.LENGTH_LONG).show();
+                    }
+                } else {
+                    Toast.makeText(getBaseContext(), "Network error", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            protected String doInBackground(String... strings) {
+
+                try {
+                    Map<String, String> data = new HashMap<String, String>();
+                    data.put("latitude", String.valueOf(location.latitude));
+                    data.put("longitude", String.valueOf(location.longitude));
+                    data.put("name", name.getText().toString());
+                    data.put("phone", phone.getText().toString());
+                    data.put("descr", descr.getText().toString());
+                    data.put("key", getResources().getString(R.string.api_key));
+
+
+                    HttpRequest request = HttpRequest.post(getResources().getString(R.string.api_base_url) + "send_request");
+                    request.form(data).created();
+                    if (request.ok()) {
+                        result = new JSONObject(request.body());
+                    }
+                } catch (Exception e) {
+                    return null;
+                }
+
+
+                return null;
+            }
+        }.execute();
+    }
+
+
 }
+

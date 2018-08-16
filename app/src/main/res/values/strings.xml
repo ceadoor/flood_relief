@@ -2,10 +2,17 @@
     <string name="app_name">Kerala Flood Relief</string>
     <string name="title_activity_recent_requests">RecentRequests</string>
     <string name="title_activity_send_request">SendRequest</string>
-    <string name="api_base_url"></string>
+    <string name="api_base_url">http://192.168.1.11/kerala/welcome/</string>
+
+    <string name="api_key"></string>
     <string-array name="necessity">
         <item>Low Priority</item>
         <item>Medium Priority</item>
         <item>High Priority</item>
     </string-array>
+    <integer-array name="level">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </integer-array>
 </resources>
