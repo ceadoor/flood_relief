@@ -142,7 +142,7 @@ public class RecentRequests extends AppCompatActivity {
             try {
                 holder.title.setText(mDataset.getJSONObject(position).getString("name"));
                 holder.phone.setText(mDataset.getJSONObject(position).getString("phone"));
-                holder.added.setText(mDataset.getJSONObject(position).getString("added"));
+                holder.added.setText(mDataset.getJSONObject(position).getString("added_on"));
                 holder.priority.setText(mDataset.getJSONObject(position).getString("priority"));
             } catch (JSONException e) {
                 e.printStackTrace();
