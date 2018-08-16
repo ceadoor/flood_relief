@@ -2,6 +2,7 @@ package in.keralafloodrelief;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -58,6 +59,23 @@ public class RecentRequests extends AppCompatActivity {
                             @Override
                             public void onClick(View view) {
                                 startActivity(new Intent(RecentRequests.this, SendRequest.class));
+                            }
+                        }).show();
+            }
+        });
+
+
+        FloatingActionButton fab2 = findViewById(R.id.fab2);
+        fab2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Please add your STD code before this number", Snackbar.LENGTH_LONG)
+                        .setAction("Continue", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent intent = new Intent(Intent.ACTION_DIAL);
+                                intent.setData(Uri.parse("tel:1077"));
+                                startActivity(intent);
                             }
                         }).show();
             }

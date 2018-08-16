@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -21,7 +22,8 @@ public class ShowReuest extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_reuest);
-//        getSupportActionBar().hide();
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         try {
             item = new JSONObject(getIntent().getStringExtra("item"));
@@ -31,6 +33,18 @@ public class ShowReuest extends AppCompatActivity {
             e.printStackTrace();
         }
 
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private void setupStats() throws JSONException {
