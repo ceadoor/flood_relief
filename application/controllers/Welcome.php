@@ -30,16 +30,33 @@ class Welcome extends CI_Controller {
     }
 
     public function send_request() {
-        $data = $_POST;
-        unset($data['key']);
-        $this->db->insert('req', $data);
-        $this->set_json_output([
-            'status' => 1,
-            'msg' => 'Done'
-        ]);
+
+        $data = ['status' => 0, 'msg' => 'Some error occured'];
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules('name', 'Name', 'trim|strip_tags|required');
+        $this->form_validation->set_rules('descr', 'Description', 'trim|strip_tags');
+        $this->form_validation->set_rules('phone', 'Phone number', 'trim|strip_tags|required');
+        $this->form_validation->set_rules('priority', 'Priority', 'trim|strip_tags|integer|required');
+        $this->form_validation->set_rules('latitude', 'Latitude', 'trim|strip_tags|required');
+        $this->form_validation->set_rules('longitude', 'Longitude', 'trim|strip_tags|required');
+        if ($this->form_validation->run() == TRUE) {
+            $this->db->insert('req', [
+                'name' => $this->input->post('name'),
+                'descr' => $this->input->post('descr'),
+                'phone' => $this->input->post('phone'),
+                'priority' => $this->input->post('priority'),
+                'latitude' => $this->input->post('latitude'),
+                'longitude' => $this->input->post('longitude')
+            ]);
+            $data = ['status' => 1, 'msg' => 'Request Successfuly posted.'];
+        } else {
+            $data['msg'] = validation_errors(NULL, NULL);
+        }
+
+        $this->set_json_output($data);
     }
 
-    public function setup(){
+    public function setup() {
         $this->db->query("CREATE TABLE `req` (
             `ID` int(10) UNSIGNED NOT NULL,
             `name` varchar(255) NOT NULL,
@@ -60,9 +77,24 @@ class Welcome extends CI_Controller {
     }
 
     public function get_req() {
+
+        $latitude = $this->db->escape($this->input->post('latitude'));
+        $longitude = $this->db->escape($this->input->post('longitude'));
+
+        $extra_qstr = "";
+        if ($latitude != NULL && $longitude != NULL) {
+            $extra_qstr .= " (SQRT(POWER((latitude-" . $latitude . "),2))+SQRT(POWER((longitude-" . $longitude . "),2))) ASC, ";
+        }
+
+
         $this->set_json_output([
             'status' => 1,
-            'requests' => $this->db->where('status', 1)->get('req')->result(),
+            'requests' => $this->db->query("SELECT *, (
+    CASE 
+        WHEN `priority` = 1 THEN 'Low'
+        WHEN `priority` = 2 THEN 'Medium'
+        WHEN `priority` = 3 THEN 'High'
+    END) AS `priority`,DATE_FORMAT(added_on, '%d %M %y %h:%i  %p') AS added_on FROM `req` WHERE status=1 ORDER BY " . $extra_qstr . " added_on DESC")->result(),
             'msg' => 'Done'
         ]);
     }
