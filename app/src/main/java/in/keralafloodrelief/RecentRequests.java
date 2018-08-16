@@ -1,6 +1,7 @@
 package in.keralafloodrelief;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -140,10 +141,26 @@ public class RecentRequests extends AppCompatActivity {
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
             try {
-                holder.title.setText(mDataset.getJSONObject(position).getString("name"));
-                holder.phone.setText(mDataset.getJSONObject(position).getString("phone"));
-                holder.added.setText(mDataset.getJSONObject(position).getString("added_on"));
-                holder.priority.setText(mDataset.getJSONObject(position).getString("priority"));
+                final JSONObject item = mDataset.getJSONObject(position);
+                holder.title.setText(item.getString("name"));
+                holder.phone.setText(item.getString("phone"));
+                holder.added.setText(item.getString("added_on"));
+                holder.priority.setText(item.getString("priority"));
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        String qstr = null;
+                        try {
+                            qstr = item.getString("latitude") + "," + item.getString("longitude");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        Uri gmmIntentUri = Uri.parse("google.navigation:q=" + qstr);
+                        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                        mapIntent.setPackage("com.google.android.apps.maps");
+                        startActivity(mapIntent);
+                    }
+                });
             } catch (JSONException e) {
                 e.printStackTrace();
             }
