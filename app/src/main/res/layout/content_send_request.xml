@@ -11,7 +11,7 @@
     tools:showIn="@layout/activity_send_request">
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/et_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -21,7 +21,7 @@
         android:paddingTop="20dp" />
 
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/et_phone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -31,7 +31,7 @@
         android:paddingTop="20dp" />
 
     <Spinner
-        android:id="@+id/spinner"
+        android:id="@+id/sp_prio"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:entries="@array/necessity"
@@ -39,7 +39,7 @@
         android:paddingTop="20dp" />
 
     <MultiAutoCompleteTextView
-        android:id="@+id/multiAutoCompleteTextView"
+        android:id="@+id/et_decr"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Description"
@@ -47,7 +47,7 @@
         android:paddingTop="20dp" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/btn_send"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Send" />
