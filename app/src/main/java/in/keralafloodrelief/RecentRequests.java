@@ -28,15 +28,17 @@ import http.HttpRequest;
 
 public class RecentRequests extends AppCompatActivity {
 
-    RecyclerView mRecyclerView;
+
     final int MY_PERMISSIONS_REQUEST_1 = 100;
+    RecyclerView mRecyclerView;
     SwipeRefreshLayout srlist;
     SingleShotLocationProvider.GPSCoordinates location;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_recent_requests);
+        setContentView(R.layout.activity_home_screen);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -69,6 +71,38 @@ public class RecentRequests extends AppCompatActivity {
         });
 
         configureMyLocation();
+    }
+
+
+    private void configureMyLocation() {
+        SingleShotLocationProvider.requestSingleUpdate(RecentRequests.this,
+                new SingleShotLocationProvider.LocationCallback() {
+                    @Override
+                    public void onNewLocationAvailable(SingleShotLocationProvider.GPSCoordinates mlocation) {
+                        RecentRequests.this.location = mlocation;
+                        getRequests();
+
+
+                    }
+                });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_1: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    configureMyLocation();
+                    return;
+                } else {
+                    Toast.makeText(RecentRequests.this, "Location Permission denied.", Toast.LENGTH_LONG).show();
+                    finish();
+                }
+                return;
+            }
+        }
     }
 
 
@@ -133,37 +167,6 @@ public class RecentRequests extends AppCompatActivity {
         }.execute();
     }
 
-    private void configureMyLocation() {
-        SingleShotLocationProvider.requestSingleUpdate(RecentRequests.this,
-                new SingleShotLocationProvider.LocationCallback() {
-                    @Override
-                    public void onNewLocationAvailable(SingleShotLocationProvider.GPSCoordinates mlocation) {
-                        RecentRequests.this.location = mlocation;
-                        getRequests();
-
-
-                    }
-                });
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_1: {
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    configureMyLocation();
-                    return;
-                } else {
-                    Toast.makeText(RecentRequests.this, "Location Permission denied.", Toast.LENGTH_LONG).show();
-                    finish();
-                }
-                return;
-            }
-        }
-    }
-
     public class RequestShowAdapter extends RecyclerView.Adapter<RequestShowAdapter.ViewHolder> {
         private JSONArray mDataset;
 
@@ -192,23 +195,9 @@ public class RecentRequests extends AppCompatActivity {
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-
                         Intent intent = new Intent(RecentRequests.this, ShowReuest.class);
                         intent.putExtra("item", item.toString());
                         startActivity(intent);
-
-
-//                        String qstr = null;
-//                        try {
-//                            qstr = item.getString("latitude") + "," + item.getString("longitude");
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                        }
-//                        Uri gmmIntentUri = Uri.parse("google.navigation:q=" + qstr);
-//                        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-//                        mapIntent.setPackage("com.google.android.apps.maps");
-//                        startActivity(mapIntent);
-
 
                     }
                 });
@@ -235,5 +224,4 @@ public class RecentRequests extends AppCompatActivity {
             }
         }
     }
-
 }

@@ -21,14 +21,14 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".RecentRequests"
-            android:label="@string/title_activity_recent_requests"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".SendRequest"
             android:label="@string/title_activity_send_request"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ShowReuest"></activity>
+        <activity android:name=".ShowReuest" />
+        <activity
+            android:name=".RecentRequests"
+            android:label="@string/title_activity_home_screen"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
