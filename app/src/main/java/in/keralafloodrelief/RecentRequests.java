@@ -166,7 +166,7 @@ public class RecentRequests extends AppCompatActivity {
                 try {
                     Map<String, String> data = new HashMap<String, String>();
 
-                    data.put("key", getResources().getString(R.string.api_key));
+                    data.put("key", BuildConfig.APIKey);
                     data.put("latitude", String.valueOf(location.latitude));
                     data.put("longitude", String.valueOf(location.longitude));
                     HttpRequest request = HttpRequest.post(getResources().getString(R.string.api_base_url) + "get_req");

@@ -169,7 +169,7 @@ public class SendRequest extends AppCompatActivity implements View.OnClickListen
                     data.put("phone", phone.getText().toString());
                     data.put("priority", String.valueOf(getResources().getIntArray(R.array.level)[prio.getSelectedItemPosition()]));
                     data.put("descr", descr.getText().toString());
-                    data.put("key", getResources().getString(R.string.api_key));
+                    data.put("key", BuildConfig.APIKey);
 
                     HttpRequest request = HttpRequest.post(getResources().getString(R.string.api_base_url) + "send_request");
                     request.form(data).created();
