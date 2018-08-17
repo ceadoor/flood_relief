@@ -33,6 +33,13 @@ public class ShowReuest extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        findViewById(R.id.button2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(ShowReuest.this, Contribute.class));
+            }
+        });
+
     }
 
 

@@ -14,4 +14,7 @@
     </integer-array>
     <string name="title_activity_home_screen">Recent Requests</string>
     <string name="action_settings">Settings</string>
+    <string name="contribut_to_info">
+
+    </string>
 </resources>

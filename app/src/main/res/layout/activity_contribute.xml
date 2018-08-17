@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    tools:context=".Contribute">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:lineSpacingExtra="5sp"
+            android:padding="30dp"
+            android:text="Chief Ministers Distress Relief Fund, (CMDRF) accepts voluntary contributions from Individuals, Organizations, Trusts, Companies and Institutions etc. All contributions towards CMDRF are exempt from Income Tax under section 80(G).         \n\n Donations now accepted through UPI mobile app like BHIM, paytm, Tez, Phonepe also.          \n\n\n (VPA : keralacmdrf@sbi) / Scan the QR Code to donate \n\n For Bank Counter Payment  \n\n Beneficiary Name :  Principal Secretary (Fin), Treasurer CMDRF\n Bank Name : State Bank of India (SBI)\n Account Number : 67319948232\n Branch : City Branch, Thiruvananthapuram\n IFSC : SBIN0070028\n"
+            android:textIsSelectable="true" />
+    </LinearLayout>
+</ScrollView>
