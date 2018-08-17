@@ -115,8 +115,6 @@ public class RecentRequests extends AppCompatActivity {
                 configureMyLocation();
             }
         });
-
-        configureMyLocation();
     }
 
 
