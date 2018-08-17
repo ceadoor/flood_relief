@@ -18,7 +18,7 @@
             android:id="@+id/textView3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="We will share this info with public. Try every other means" />
+            android:text="We will share this info with public. People near you will get these informations. Try every other means" />
 
         <EditText
             android:id="@+id/et_name"
@@ -53,7 +53,7 @@
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:gravity="top"
-            android:hint="Describe your issue in a sentence"
+            android:hint="Describe your issue,landmarks,etc."
             android:paddingBottom="10dp"
             android:paddingTop="20dp" />
 
