@@ -17,7 +17,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -116,7 +115,7 @@ public class RecentRequests extends AppCompatActivity {
             }
         });
 
-        configureMyLocation();
+//        configureMyLocation();
     }
 
 
@@ -127,6 +126,13 @@ public class RecentRequests extends AppCompatActivity {
                     public void onNewLocationAvailable(SingleShotLocationProvider.GPSCoordinates mlocation) {
                         RecentRequests.this.location = mlocation;
                         getRequests();
+                    }
+
+                    @Override
+                    public void onDisabled() {
+                        RecentRequests.this.location = new SingleShotLocationProvider.GPSCoordinates(-1, -1);
+                        getRequests();
+                        Toast.makeText(getBaseContext(), "GPS Disabled. Please enable it and reload.", Toast.LENGTH_LONG).show();
                     }
                 });
     }
@@ -197,7 +203,6 @@ public class RecentRequests extends AppCompatActivity {
                     data.put("longitude", String.valueOf(location.longitude));
                     HttpRequest request = HttpRequest.post(getResources().getString(R.string.api_base_url) + "get_req");
                     request.form(data).created();
-                    Log.e("====", BuildConfig.APIKey);
                     if (request.ok()) {
                         result = new JSONObject(request.body());
                     }

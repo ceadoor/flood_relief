@@ -2,7 +2,11 @@ package in.keralafloodrelief;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -30,7 +34,7 @@ public class SendRequest extends AppCompatActivity implements View.OnClickListen
 
     EditText name, phone, descr;
     Spinner prio;
-    Button send;
+    Button btn_send;
     SingleShotLocationProvider.GPSCoordinates location;
 
     @Override
@@ -56,11 +60,13 @@ public class SendRequest extends AppCompatActivity implements View.OnClickListen
         phone = findViewById(R.id.et_phone);
         descr = findViewById(R.id.et_decr);
         prio = findViewById(R.id.sp_prio);
-        send = findViewById(R.id.btn_send);
+        btn_send = findViewById(R.id.btn_send);
 
-        send.setVisibility(View.GONE);
+        btn_send.setVisibility(View.GONE);
 
 
+        btn_send.setVisibility(View.VISIBLE);
+        btn_send.setOnClickListener(SendRequest.this);
     }
 
 
@@ -88,9 +94,22 @@ public class SendRequest extends AppCompatActivity implements View.OnClickListen
                 new SingleShotLocationProvider.LocationCallback() {
                     @Override
                     public void onNewLocationAvailable(SingleShotLocationProvider.GPSCoordinates mlocation) {
-                        send.setVisibility(View.VISIBLE);
-                        send.setOnClickListener(SendRequest.this);
                         SendRequest.this.location = mlocation;
+
+                    }
+
+                    @Override
+                    public void onDisabled() {
+                        location = new SingleShotLocationProvider.GPSCoordinates(-1, -1);
+                        Toast.makeText(getBaseContext(), "GPS Disabled. Unable to determine location.", Toast.LENGTH_LONG).show();
+                        new BroadcastReceiver() {
+                            @Override
+                            public void onReceive(Context context, Intent intent) {
+                                if (intent.getAction().matches(LocationManager.PROVIDERS_CHANGED_ACTION)) {
+                                    configureMyLocation();
+                                }
+                            }
+                        };
 
                     }
                 });
