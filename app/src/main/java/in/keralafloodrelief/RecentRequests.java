@@ -1,5 +1,7 @@
 package in.keralafloodrelief;
 
+import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -7,11 +9,15 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,15 +60,37 @@ public class RecentRequests extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "This is only for people in emergency Are you sure ?", Snackbar.LENGTH_LONG)
-                        .setAction("Yes", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
+
+                AlertDialog.Builder builder1 = new AlertDialog.Builder(RecentRequests.this);
+                builder1.setTitle("This is only for people in emergency");
+                builder1.setMessage(" Are you sure ?");
+                builder1.setPositiveButton(
+                        "Yes",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
                                 startActivity(new Intent(RecentRequests.this, SendRequest.class));
                             }
-                        }).show();
+                        });
+                builder1.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                });
+
+                builder1.create().show();
             }
         });
+
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    MY_PERMISSIONS_REQUEST_1);
+        } else {
+            configureMyLocation();
+        }
 
 
         FloatingActionButton fab2 = findViewById(R.id.fab2);
@@ -99,8 +127,6 @@ public class RecentRequests extends AppCompatActivity {
                     public void onNewLocationAvailable(SingleShotLocationProvider.GPSCoordinates mlocation) {
                         RecentRequests.this.location = mlocation;
                         getRequests();
-
-
                     }
                 });
     }
@@ -171,6 +197,7 @@ public class RecentRequests extends AppCompatActivity {
                     data.put("longitude", String.valueOf(location.longitude));
                     HttpRequest request = HttpRequest.post(getResources().getString(R.string.api_base_url) + "get_req");
                     request.form(data).created();
+                    Log.e("====", BuildConfig.APIKey);
                     if (request.ok()) {
                         result = new JSONObject(request.body());
                     }
