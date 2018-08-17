@@ -102,7 +102,7 @@ class Welcome extends CI_Controller {
         WHEN `priority` = 1 THEN 'Low'
         WHEN `priority` = 2 THEN 'Medium'
         WHEN `priority` = 3 THEN 'High'
-    END) AS `priority`,DATE_FORMAT(added_on, '%d %M %y %h:%i  %p') AS added_on FROM `req` WHERE status=1 ORDER BY " . $extra_qstr . " added_on DESC")->result(),
+    END) AS `priority`,DATE_FORMAT(added_on, '%d %M %y %h:%i  %p') AS added_on FROM `req` WHERE status=1 ORDER BY " . $extra_qstr . " added_on DESC LIMIT 100")->result(),
                 'msg' => 'Done'
             ]);
         }
