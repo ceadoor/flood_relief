@@ -4,6 +4,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Welcome extends CI_Controller {
 
+    private $ALLOWED_KEYS;
+
     /**
      * Index Page for this controller.
      *
@@ -19,6 +21,11 @@ class Welcome extends CI_Controller {
      * map to /index.php/welcome/<method_name>
      * @see https://codeigniter.com/user_guide/general/urls.html
      */
+    public function __construct() {
+        parent::__construct();
+        $this->ALLOWED_KEYS = $this->config->item('api_keys');
+    }
+
     public function index() {
         $this->load->view('welcome_message');
     }
@@ -29,9 +36,16 @@ class Welcome extends CI_Controller {
         $ci->output->set_output(json_encode($data));
     }
 
+    function check_key() {
+        if ($this->input->post('key')) {
+            return in_array($this->input->post('key'), $this->ALLOWED_KEYS);
+        }
+        return FALSE;
+    }
+
     public function send_request() {
 
-        if ($this->input->post('key') == "") {
+        if ($this->check_key()) {
             $data = ['status' => 0, 'msg' => 'Some error occured'];
             $this->load->library('form_validation');
             $this->form_validation->set_rules('name', 'Name', 'trim|strip_tags|required');
@@ -80,7 +94,7 @@ class Welcome extends CI_Controller {
 
     public function get_req() {
 
-        if ($this->input->post('key') == "") {
+        if ($this->check_key()) {
             $latitude = $this->db->escape($this->input->post('latitude'));
             $longitude = $this->db->escape($this->input->post('longitude'));
 

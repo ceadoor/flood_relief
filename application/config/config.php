@@ -521,3 +521,16 @@ $config['rewrite_short_tags'] = FALSE;
 | Array:		array('10.0.1.200', '192.168.5.0/24')
 */
 $config['proxy_ips'] = '';
+
+
+/*
+|--------------------------------------------------------------------------
+| API Keys
+|--------------------------------------------------------------------------
+|
+| Contains a list of keys for authenticating the requests from the app
+|
+| Array:		array('key1', 'key2')
+*/
+
+$config['api_keys'] = array('key1', 'key2');
