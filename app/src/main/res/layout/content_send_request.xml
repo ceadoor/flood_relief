@@ -53,7 +53,7 @@
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:gravity="top"
-            android:hint="Description"
+            android:hint="Describe your issue in a sentence"
             android:paddingBottom="10dp"
             android:paddingTop="20dp" />
 
