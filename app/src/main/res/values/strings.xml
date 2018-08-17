@@ -1,9 +1,7 @@
 <resources>
-    <string name="app_name">Kerala Flood Relief</string>
+    <string name="app_name">Flood Relief Local Help</string>
     <string name="title_activity_send_request">Send Request</string>
     <string name="api_base_url">http://jobinrjohnson.in/flood/welcome/</string>
-
-    <string name="api_key"></string>
     <string-array name="necessity">
         <item>Low Priority</item>
         <item>Medium Priority</item>
