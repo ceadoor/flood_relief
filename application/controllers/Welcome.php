@@ -91,7 +91,7 @@ class Welcome extends CI_Controller {
             $longitude = $this->db->escape($this->input->post('longitude'));
 
             $extra_qstr = "";
-            if ($latitude != NULL && $longitude != NULL) {
+            if ($latitude != -1 && $longitude != -1) {
                 $extra_qstr .= " (SQRT(POWER((latitude-" . $latitude . "),2))+SQRT(POWER((longitude-" . $longitude . "),2))) ASC, ";
             }
 
