@@ -29,7 +29,8 @@
             android:name=".RecentRequests"
             android:label="@string/title_activity_home_screen"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Contribute"></activity>
+        <activity android:name=".Contribute" />
+        <activity android:name=".Thanks"></activity>
     </application>
 
 </manifest>
