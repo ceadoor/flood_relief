@@ -9,6 +9,10 @@ class Welcome extends CI_Controller {
     public function __construct() {
         parent::__construct();
         $this->ALLOWED_KEYS = $this->config->item('api_keys');
+        
+        // MISSION SUCCESSFULL SO.... disable everything
+        $this->set_json_output(['status' => 0, 'msg' => 'This application wont function anymore. Thank you for your support.']);
+        die();
     }
 
     public function index() {
