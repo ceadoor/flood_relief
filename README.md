@@ -5,7 +5,7 @@
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![Twitter](https://img.shields.io/twitter/url/https/github.com/ceadoor/flood_relief/.svg?style=social)](https://twitter.com/intent/tweet?url=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Din.keralafloodrelief&text=Install%20this%20app%20to%20track%20and%20locate%20the%20flood%20stranded)
 
-**An Android App**, designed and developed to help the ***stranded people of the flood and rain*** in **Kerala**, focussing on *seeking help* from the **local support** for finding and rescuing the survivors of the disaster **in all the flood affected district areas**. 
+**An Android App**, designed and developed to help the ***stranded people of the flood and rain*** in **Kerala**, focusing on *seeking help* from the **local support** for finding and rescuing the survivors of the disaster **in all the flood affected district areas**. 
 
 [<img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png" alt="Download from Google Play" height="80">](https://play.google.com/store/apps/details?id=in.keralafloodrelief)
 
